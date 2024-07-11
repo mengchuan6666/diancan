@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.ActivityInfoMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.ActivityInfo" id="ActivityInfoResult">
+        <result property="id" column="id"/>
+        <result property="activityName" column="activity_name"/>
+        <result property="activityMoney" column="activity_money"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="announcements" column="announcements"/>
+        <result property="venueId" column="venue_id"/>
+        <result property="venueName" column="venue_name"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="serviceScope" column="service_scope"/>
+        <result property="cardThem" column="card_them"/>
+        <result property="pic" column="pic"/>
+    </resultMap>
+
+    <sql id="selectActivityInfoVo">
+        select id,
+               activity_name,
+               activity_money,
+               start_time,
+               end_time,
+               announcements,
+               venue_id,
+               venue_name,
+               deleted,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time,
+               service_scope,
+               card_them,
+            pic
+        from activity_info
+    </sql>
+
+    <select id="selectActivityInfoList" parameterType="com.qnbc.venueReservation.domain.ActivityInfo"
+            resultMap="ActivityInfoResult">
+        <include refid="selectActivityInfoVo"/>
+        <where>
+            <if test="activityName != null  and activityName != ''">and activity_name like concat('%', #{activityName},
+                '%')
+            </if>
+            <if test="activityMoney != null ">and activity_money = #{activityMoney}</if>
+            <if test="startTime != null ">and start_time = #{startTime}</if>
+            <if test="endTime != null ">and end_time = #{endTime}</if>
+            <if test="announcements != null  and announcements != ''">and announcements = #{announcements}</if>
+            <if test="venueId != null ">and venue_id = #{venueId}</if>
+            <if test="deleted != null ">and deleted = #{deleted}</if>
+            <if test="createdBy != null  and createdBy != ''">and created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and updated_time = #{updatedTime}</if>
+            <if test="serviceScope != null  and serviceScope != ''">and service_scope = #{serviceScope}</if>
+            <if test="cardThem != null  and cardThem != ''">and card_them = #{cardThem}</if>
+        </where>
+    </select>
+
+    <select id="selectActivityInfoById" parameterType="Long" resultMap="ActivityInfoResult">
+        <include refid="selectActivityInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertActivityInfo" parameterType="com.qnbc.venueReservation.domain.ActivityInfo"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into activity_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="activityName != null">activity_name,</if>
+            <if test="activityMoney != null">activity_money,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="announcements != null">announcements,</if>
+            <if test="venueId != null">venue_id,</if>
+            <if test="venueName != null">venue_name,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="serviceScope != null">service_scope,</if>
+            <if test="cardThem != null">card_them,</if>
+            <if test="pic != null">pic,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="activityName != null">#{activityName},</if>
+            <if test="activityMoney != null">#{activityMoney},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="announcements != null">#{announcements},</if>
+            <if test="venueId != null">#{venueId},</if>
+            <if test="venueName != null">#{venueName},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="serviceScope != null">#{serviceScope},</if>
+            <if test="cardThem != null">#{cardThem},</if>
+            <if test="pic != null">#{pic},</if>
+        </trim>
+    </insert>
+
+    <update id="updateActivityInfo" parameterType="com.qnbc.venueReservation.domain.ActivityInfo">
+        update activity_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="activityName != null">activity_name = #{activityName},</if>
+            <if test="activityMoney != null">activity_money = #{activityMoney},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="announcements != null">announcements = #{announcements},</if>
+            <if test="venueId != null">venue_id = #{venueId},</if>
+            <if test="venueName != null">venue_name = #{venueName},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="serviceScope != null">service_scope = #{serviceScope},</if>
+            <if test="cardThem != null">card_them = #{cardThem},</if>
+            <if test="pic != null">pic = #{pic},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteActivityInfoById" parameterType="Long">
+        delete
+        from activity_info
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteActivityInfoByIds" parameterType="String">
+        delete from activity_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

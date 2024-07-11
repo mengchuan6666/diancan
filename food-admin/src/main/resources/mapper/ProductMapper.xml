@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.ProductMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.Product" id="ProductResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="stock" column="stock"/>
+        <result property="propic" column="proPic"/>
+        <result property="ishot" column="isHot"/>
+        <result property="isswiper" column="isSwiper"/>
+        <result property="swiperpic" column="swiperPic"/>
+        <result property="swipersort" column="swiperSort"/>
+        <result property="typeid" column="typeId"/>
+        <result property="hotdatetime" column="hotDateTime"/>
+        <result property="productintroimgs" column="productIntroImgs"/>
+        <result property="productparaimgs" column="productParaImgs"/>
+        <result property="description" column="description"/>
+        <result property="proStatus" column="pro_status"/>
+    </resultMap>
+
+    <sql id="selectProductVo">
+        select id,
+               name,
+               price,
+               stock,
+               proPic,
+               isHot,
+               isSwiper,
+               swiperPic,
+               swiperSort,
+               typeId,
+               hotDateTime,
+               productIntroImgs,
+               productParaImgs,
+               description,
+               pro_status
+        from product
+    </sql>
+
+    <select id="selectProductList" parameterType="com.qnbc.venueReservation.domain.Product" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="price != null ">and price = #{price}</if>
+            <if test="stock != null ">and stock = #{stock}</if>
+            <if test="propic != null  and propic != ''">and proPic = #{propic}</if>
+            <if test="ishot != null ">and isHot = #{ishot}</if>
+            <if test="isswiper != null ">and isSwiper = #{isswiper}</if>
+            <if test="swiperpic != null  and swiperpic != ''">and swiperPic = #{swiperpic}</if>
+            <if test="swipersort != null ">and swiperSort = #{swipersort}</if>
+            <if test="typeid != null ">and typeId = #{typeid}</if>
+            <if test="hotdatetime != null ">and hotDateTime = #{hotdatetime}</if>
+            <if test="productintroimgs != null  and productintroimgs != ''">and productIntroImgs = #{productintroimgs}
+            </if>
+            <if test="productparaimgs != null  and productparaimgs != ''">and productParaImgs = #{productparaimgs}</if>
+            <if test="description != null  and description != ''">and description = #{description}</if>
+        </where>
+    </select>
+
+    <select id="selectProductById" parameterType="Long" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertProduct" parameterType="com.qnbc.venueReservation.domain.Product" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="price != null">price,</if>
+            <if test="stock != null">stock,</if>
+            <if test="propic != null">proPic,</if>
+            <if test="ishot != null">isHot,</if>
+            <if test="isswiper != null">isSwiper,</if>
+            <if test="swiperpic != null">swiperPic,</if>
+            <if test="swipersort != null">swiperSort,</if>
+            <if test="typeid != null">typeId,</if>
+            <if test="hotdatetime != null">hotDateTime,</if>
+            <if test="productintroimgs != null">productIntroImgs,</if>
+            <if test="productparaimgs != null">productParaImgs,</if>
+            <if test="description != null">description,</if>
+            <if test="proStatus != null">pro_status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="price != null">#{price},</if>
+            <if test="stock != null">#{stock},</if>
+            <if test="propic != null">#{propic},</if>
+            <if test="ishot != null">#{ishot},</if>
+            <if test="isswiper != null">#{isswiper},</if>
+            <if test="swiperpic != null">#{swiperpic},</if>
+            <if test="swipersort != null">#{swipersort},</if>
+            <if test="typeid != null">#{typeid},</if>
+            <if test="hotdatetime != null">#{hotdatetime},</if>
+            <if test="productintroimgs != null">#{productintroimgs},</if>
+            <if test="productparaimgs != null">#{productparaimgs},</if>
+            <if test="description != null">#{description},</if>
+            <if test="proStatus != null">#{proStatus},</if>
+        </trim>
+    </insert>
+
+    <update id="updateProduct" parameterType="com.qnbc.venueReservation.domain.Product">
+        update product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="propic != null">proPic = #{propic},</if>
+            <if test="ishot != null">isHot = #{ishot},</if>
+            <if test="isswiper != null">isSwiper = #{isswiper},</if>
+            <if test="swiperpic != null">swiperPic = #{swiperpic},</if>
+            <if test="swipersort != null">swiperSort = #{swipersort},</if>
+            <if test="typeid != null">typeId = #{typeid},</if>
+            <if test="hotdatetime != null">hotDateTime = #{hotdatetime},</if>
+            <if test="productintroimgs != null">productIntroImgs = #{productintroimgs},</if>
+            <if test="productparaimgs != null">productParaImgs = #{productparaimgs},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="proStatus != null">pro_status = #{proStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductById" parameterType="Long">
+        delete
+        from product
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteProductByIds" parameterType="String">
+        delete from product where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

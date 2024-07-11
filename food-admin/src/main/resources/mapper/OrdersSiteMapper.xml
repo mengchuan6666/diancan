@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.OrdersSiteMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.OrdersSite" id="OrdersSiteResult">
+        <result property="id" column="id"/>
+        <result property="siteId" column="site_id"/>
+        <result property="siteName" column="site_name"/>
+        <result property="siteUseDate" column="site_use_date"/>
+        <result property="siteUseTime" column="site_use_time"/>
+        <result property="siteFee" column="site_fee"/>
+        <result property="orderId" column="order_id"/>
+        <result property="sitePayKey" column="site_pay_key"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="deleted" column="deleted"/>
+        <result property="revision" column="revision"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="venueId" column="venue_id"/>
+        <result property="venueName" column="venue_name"/>
+    </resultMap>
+
+    <sql id="selectOrdersSiteVo">
+        select id,
+               site_id,
+               site_name,
+               site_use_date,
+               site_use_time,
+               site_fee,
+               order_id,
+               site_pay_key,
+               pay_status,
+               deleted,
+               revision,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time,
+               venue_id,
+               venue_name
+        from orders_site
+    </sql>
+
+    <select id="selectOrdersSiteList" parameterType="com.qnbc.venueReservation.domain.OrdersSite"
+            resultMap="OrdersSiteResult">
+        <include refid="selectOrdersSiteVo"/>
+        <where>
+            <if test="siteId != null  and siteId != ''">and site_id = #{siteId}</if>
+            <if test="siteName != null  and siteName != ''">and site_name like concat('%', #{siteName}, '%')</if>
+            <if test="siteUseDate != null  and siteUseDate != ''">and site_use_date = #{siteUseDate}</if>
+            <if test="siteUseTime != null  and siteUseTime != ''">and site_use_time = #{siteUseTime}</if>
+            <if test="siteFee != null ">and site_fee = #{siteFee}</if>
+            <if test="orderId != null  and orderId != ''">and order_id = #{orderId}</if>
+            <if test="sitePayKey != null  and sitePayKey != ''">and site_pay_key = #{sitePayKey}</if>
+            <if test="payStatus != null  and payStatus != ''">and pay_status = #{payStatus}</if>
+            <if test="deleted != null ">and deleted = #{deleted}</if>
+            <if test="revision != null ">and revision = #{revision}</if>
+            <if test="createdBy != null  and createdBy != ''">and created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and updated_time = #{updatedTime}</if>
+            <if test="venueId != null ">and venue_id = #{venueId}</if>
+            <if test="venueName != null  and venueName != ''">and venue_name like concat('%', #{venueName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectOrdersSiteById" parameterType="Long" resultMap="OrdersSiteResult">
+        <include refid="selectOrdersSiteVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectOrdersSiteByOrderId" resultType="com.qnbc.venueReservation.domain.OrdersSite"
+            parameterType="java.lang.Long">
+        select  * from orders_site where order_id = #{orderId}
+    </select>
+
+    <insert id="insertOrdersSite" parameterType="com.qnbc.venueReservation.domain.OrdersSite">
+        insert into orders_site
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="siteId != null">site_id,</if>
+            <if test="siteName != null">site_name,</if>
+            <if test="siteUseDate != null">site_use_date,</if>
+            <if test="siteUseTime != null">site_use_time,</if>
+            <if test="siteFee != null">site_fee,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="sitePayKey != null">site_pay_key,</if>
+            <if test="payStatus != null">pay_status,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="revision != null">revision,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="venueId != null">venue_id,</if>
+            <if test="venueName != null">venue_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="siteId != null">#{siteId},</if>
+            <if test="siteName != null">#{siteName},</if>
+            <if test="siteUseDate != null">#{siteUseDate},</if>
+            <if test="siteUseTime != null">#{siteUseTime},</if>
+            <if test="siteFee != null">#{siteFee},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="sitePayKey != null">#{sitePayKey},</if>
+            <if test="payStatus != null">#{payStatus},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="revision != null">#{revision},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="venueId != null">#{venueId},</if>
+            <if test="venueName != null">#{venueName},</if>
+        </trim>
+    </insert>
+    <insert id="insertOrdersSiteBatch" parameterType="list">
+        INSERT INTO orders_site( id,
+        site_id,
+        site_name,
+        site_use_date,
+        site_use_time,
+        site_fee,
+        order_id,
+        pay_status,
+        created_by,
+        created_time,
+        venue_id,
+        venue_name )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.siteId},#{item.siteName},#{item.siteUseDate},
+            #{item.siteUseTime},#{item.siteFee}
+            ,#{item.orderId},#{item.payStatus}
+            ,#{item.createdBy},#{item.createdTime}
+            ,#{item.venueId},#{item.venueName}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateOrdersSite" parameterType="com.qnbc.venueReservation.domain.OrdersSite">
+        update orders_site
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null">site_id = #{siteId},</if>
+            <if test="siteName != null">site_name = #{siteName},</if>
+            <if test="siteUseDate != null">site_use_date = #{siteUseDate},</if>
+            <if test="siteUseTime != null">site_use_time = #{siteUseTime},</if>
+            <if test="siteFee != null">site_fee = #{siteFee},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="sitePayKey != null">site_pay_key = #{sitePayKey},</if>
+            <if test="payStatus != null">pay_status = #{payStatus},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="revision != null">revision = #{revision},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="venueId != null">venue_id = #{venueId},</if>
+            <if test="venueName != null">venue_name = #{venueName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrdersSiteById" parameterType="Long">
+        delete
+        from orders_site
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteOrdersSiteByIds" parameterType="String">
+        delete from orders_site where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

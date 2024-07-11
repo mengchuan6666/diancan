@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.UserStudentMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.UserStudent" id="UserStudentResult">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="phone" column="phone"/>
+        <result property="schoolNum" column="school_num"/>
+        <result property="studentMajor" column="student_major"/>
+        <result property="studentClass" column="student_class"/>
+        <result property="studentPic" column="student_pic"/>
+    </resultMap>
+
+    <sql id="selectUserStudentVo">
+        select id, username, phone, school_num, student_major, student_class, student_pic
+        from user_student
+    </sql>
+
+    <select id="selectUserStudentList" parameterType="com.qnbc.venueReservation.domain.UserStudent"
+            resultMap="UserStudentResult">
+        <include refid="selectUserStudentVo"/>
+        <where>
+            <if test="username != null  and username != ''">and username like concat('%', #{username}, '%')</if>
+            <if test="phone != null  and phone != ''">and phone = #{phone}</if>
+            <if test="schoolNum != null  and schoolNum != ''">and school_num = #{schoolNum}</if>
+            <if test="studentMajor != null  and studentMajor != ''">and student_major = #{studentMajor}</if>
+            <if test="studentClass != null  and studentClass != ''">and student_class = #{studentClass}</if>
+            <if test="studentPic != null  and studentPic != ''">and student_pic = #{studentPic}</if>
+        </where>
+    </select>
+
+    <select id="selectUserStudentById" parameterType="Long" resultMap="UserStudentResult">
+        <include refid="selectUserStudentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertUserStudent" parameterType="com.qnbc.venueReservation.domain.UserStudent" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into user_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">username,</if>
+            <if test="phone != null">phone,</if>
+            <if test="schoolNum != null">school_num,</if>
+            <if test="studentMajor != null">student_major,</if>
+            <if test="studentClass != null">student_class,</if>
+            <if test="studentPic != null">student_pic,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">#{username},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="schoolNum != null">#{schoolNum},</if>
+            <if test="studentMajor != null">#{studentMajor},</if>
+            <if test="studentClass != null">#{studentClass},</if>
+            <if test="studentPic != null">#{studentPic},</if>
+        </trim>
+    </insert>
+    <insert id="insertUserStudentBatch" parameterType="list">
+        INSERT INTO user_student( id,
+        username,
+        phone,
+        school_num,
+        student_major,
+        student_class,
+        student_pic)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.username},#{item.phone},#{item.schoolNum},
+            #{item.studentMajor},#{item.studentClass}
+            ,#{item.studentPic}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateUserStudent" parameterType="com.qnbc.venueReservation.domain.UserStudent">
+        update user_student
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null">username = #{username},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="schoolNum != null">school_num = #{schoolNum},</if>
+            <if test="studentMajor != null">student_major = #{studentMajor},</if>
+            <if test="studentClass != null">student_class = #{studentClass},</if>
+            <if test="studentPic != null">student_pic = #{studentPic},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserStudentById" parameterType="Long">
+        delete
+        from user_student
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteUserStudentByIds" parameterType="String">
+        delete from user_student where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.IntegralMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.Integral" id="IntegralResult">
+        <result property="id" column="id"/>
+        <result property="userIntegral" column="user_integral"/>
+        <result property="userId" column="user_id"/>
+        <result property="openId" column="open_id"/>
+        <result property="message" column="message"/>
+    </resultMap>
+
+    <sql id="selectIntegralVo">
+        select id, user_integral, user_id, open_id, message
+        from integral
+    </sql>
+
+    <select id="selectIntegralList" parameterType="com.qnbc.venueReservation.domain.Integral"
+            resultMap="IntegralResult">
+        select a.id, a.user_integral, b.username AS user_id, a.open_id,a.message
+        from integral a left join sys_user b on a.user_id = b.id
+        <where>
+            <if test="userId != null  and userId != ''">and b.username like concat('%', #{userId}, '%')</if>
+            <if test="openId != null  and openId != ''">and a.open_id = #{openId}</if>
+        </where>
+    </select>
+
+    <select id="selectIntegralById" parameterType="Long" resultMap="IntegralResult">
+        <include refid="selectIntegralVo"/>
+        where id = #{id}
+    </select>
+    <select id="getInfoByOpenId" resultMap="IntegralResult">
+        select *
+        from integral
+        where open_id = #{openId}
+    </select>
+    <select id="selectIntegralByOpenId" resultType="com.qnbc.venueReservation.domain.Integral"
+            parameterType="java.lang.String">
+        select *
+        from integral
+        where open_id = #{openId}
+
+    </select>
+
+    <insert id="insertIntegral" parameterType="com.qnbc.venueReservation.domain.Integral">
+        insert into integral
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userIntegral != null">user_integral,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="openId != null">open_id,</if>
+            <if test="message != null">message,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userIntegral != null">#{userIntegral},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="openId != null">#{openId},</if>
+            <if test="message != null">#{message},</if>
+        </trim>
+    </insert>
+
+    <update id="updateIntegral" parameterType="com.qnbc.venueReservation.domain.Integral">
+        update integral
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userIntegral != null">user_integral = #{userIntegral},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="openId != null">open_id = #{openId},</if>
+            <if test="message != null">message = #{message},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIntegralById" parameterType="Long">
+        delete
+        from integral
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteIntegralByIds" parameterType="String">
+        delete from integral where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

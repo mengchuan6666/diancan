@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.AddressMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.Address" id="AddressResult">
+        <result property="id"    column="id"    />
+        <result property="userid"    column="userId"    />
+        <result property="address"    column="address"    />
+        <result property="consignee"    column="consignee"    />
+        <result property="telnumber"    column="telNumber"    />
+        <result property="createdate"    column="createDate"    />
+    </resultMap>
+
+    <sql id="selectAddressVo">
+        select id, userId, address, consignee, telNumber, createDate from address
+    </sql>
+
+    <select id="selectAddressList" parameterType="com.qnbc.venueReservation.domain.Address" resultMap="AddressResult">
+        <include refid="selectAddressVo"/>
+        <where>
+            <if test="userid != null  and userid != ''"> and userId = #{userid}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="consignee != null  and consignee != ''"> and consignee = #{consignee}</if>
+            <if test="telnumber != null  and telnumber != ''"> and telNumber = #{telnumber}</if>
+            <if test="createdate != null "> and createDate = #{createdate}</if>
+        </where>
+    </select>
+
+    <select id="selectAddressById" parameterType="Long" resultMap="AddressResult">
+        <include refid="selectAddressVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAddress" parameterType="com.qnbc.venueReservation.domain.Address" useGeneratedKeys="true" keyProperty="id">
+        insert into address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userid != null">userId,</if>
+            <if test="address != null">address,</if>
+            <if test="consignee != null">consignee,</if>
+            <if test="telnumber != null">telNumber,</if>
+            <if test="createdate != null">createDate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userid != null">#{userid},</if>
+            <if test="address != null">#{address},</if>
+            <if test="consignee != null">#{consignee},</if>
+            <if test="telnumber != null">#{telnumber},</if>
+            <if test="createdate != null">#{createdate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAddress" parameterType="com.qnbc.venueReservation.domain.Address">
+        update address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userid != null">userId = #{userid},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="consignee != null">consignee = #{consignee},</if>
+            <if test="telnumber != null">telNumber = #{telnumber},</if>
+            <if test="createdate != null">createDate = #{createdate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAddressById" parameterType="Long">
+        delete from address where id = #{id}
+    </delete>
+
+    <delete id="deleteAddressByIds" parameterType="String">
+        delete from address where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

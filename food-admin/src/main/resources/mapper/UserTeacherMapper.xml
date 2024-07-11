@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.UserTeacherMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.UserTeacher" id="UserTeacherResult">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="phone" column="phone"/>
+        <result property="jobNo" column="job_no"/>
+    </resultMap>
+
+    <sql id="selectUserTeacherVo">
+        select id, username, phone, job_no
+        from user_teacher
+    </sql>
+
+    <select id="selectUserTeacherList" parameterType="com.qnbc.venueReservation.domain.UserTeacher"
+            resultMap="UserTeacherResult">
+        <include refid="selectUserTeacherVo"/>
+        <where>
+            <if test="username != null  and username != ''">and username like concat('%', #{username}, '%')</if>
+            <if test="phone != null  and phone != ''">and phone = #{phone}</if>
+            <if test="jobNo != null  and jobNo != ''">and job_no = #{jobNo}</if>
+        </where>
+    </select>
+
+    <select id="selectUserTeacherById" parameterType="Long" resultMap="UserTeacherResult">
+        <include refid="selectUserTeacherVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertUserTeacher" parameterType="com.qnbc.venueReservation.domain.UserTeacher">
+        insert into user_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="username != null">username,</if>
+            <if test="phone != null">phone,</if>
+            <if test="jobNo != null">job_no,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="username != null">#{username},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="jobNo != null">#{jobNo},</if>
+        </trim>
+    </insert>
+    <insert id="insertUserTeacherBatch"
+            parameterType="com.qnbc.venueReservation.domain.UserTeacher">
+        INSERT INTO user_teacher(
+        username,
+        phone,
+        job_no)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.username},#{item.phone},#{item.jobNo}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateUserTeacher" parameterType="com.qnbc.venueReservation.domain.UserTeacher">
+        update user_teacher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null">username = #{username},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="jobNo != null">job_no = #{jobNo},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserTeacherById" parameterType="Long">
+        delete
+        from user_teacher
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteUserTeacherByIds" parameterType="String">
+        delete from user_teacher where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

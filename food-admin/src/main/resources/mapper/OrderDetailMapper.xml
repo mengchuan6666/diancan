@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.OrderDetailMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.OrderDetail" id="OrderDetailResult">
+        <result property="id"    column="id"    />
+        <result property="mid"    column="mId"    />
+        <result property="goodsid"    column="goodsId"    />
+        <result property="goodsnumber"    column="goodsNumber"    />
+        <result property="goodsprice"    column="goodsPrice"    />
+        <result property="goodsname"    column="goodsName"    />
+        <result property="goodspic"    column="goodsPic"    />
+    </resultMap>
+
+    <sql id="selectOrderDetailVo">
+        select id, mId, goodsId, goodsNumber, goodsPrice, goodsName, goodsPic from order_detail
+    </sql>
+
+    <select id="selectOrderDetailList" parameterType="com.qnbc.venueReservation.domain.OrderDetail" resultMap="OrderDetailResult">
+        <include refid="selectOrderDetailVo"/>
+        <where>
+            <if test="mid != null "> and mId = #{mid}</if>
+            <if test="goodsid != null "> and goodsId = #{goodsid}</if>
+            <if test="goodsnumber != null "> and goodsNumber = #{goodsnumber}</if>
+            <if test="goodsprice != null "> and goodsPrice = #{goodsprice}</if>
+            <if test="goodsname != null  and goodsname != ''"> and goodsName like concat('%', #{goodsname}, '%')</if>
+            <if test="goodspic != null  and goodspic != ''"> and goodsPic = #{goodspic}</if>
+        </where>
+    </select>
+
+    <select id="selectOrderDetailById" parameterType="Long" resultMap="OrderDetailResult">
+        <include refid="selectOrderDetailVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOrderDetail" parameterType="com.qnbc.venueReservation.domain.OrderDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mid != null">mId,</if>
+            <if test="goodsid != null">goodsId,</if>
+            <if test="goodsnumber != null">goodsNumber,</if>
+            <if test="goodsprice != null">goodsPrice,</if>
+            <if test="goodsname != null">goodsName,</if>
+            <if test="goodspic != null">goodsPic,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mid != null">#{mid},</if>
+            <if test="goodsid != null">#{goodsid},</if>
+            <if test="goodsnumber != null">#{goodsnumber},</if>
+            <if test="goodsprice != null">#{goodsprice},</if>
+            <if test="goodsname != null">#{goodsname},</if>
+            <if test="goodspic != null">#{goodspic},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrderDetail" parameterType="com.qnbc.venueReservation.domain.OrderDetail">
+        update order_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mid != null">mId = #{mid},</if>
+            <if test="goodsid != null">goodsId = #{goodsid},</if>
+            <if test="goodsnumber != null">goodsNumber = #{goodsnumber},</if>
+            <if test="goodsprice != null">goodsPrice = #{goodsprice},</if>
+            <if test="goodsname != null">goodsName = #{goodsname},</if>
+            <if test="goodspic != null">goodsPic = #{goodspic},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderDetailById" parameterType="Long">
+        delete from order_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderDetailByIds" parameterType="String">
+        delete from order_detail where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

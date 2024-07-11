@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.ActivityUserMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.ActivityUser" id="ActivityUserResult">
+        <result property="id" column="id"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="usernameActivity" column="username_activity"/>
+        <result property="usernamePhone" column="username_phone"/>
+        <result property="usernameCompany" column="username_company"/>
+        <result property="userPic" column="user_pic"/>
+        <result property="openId" column="open_id"/>
+    </resultMap>
+
+    <sql id="selectActivityUserVo">
+        select id,
+               activity_id,
+               deleted,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time,
+               username_activity,
+               username_phone,
+               username_company,
+               user_pic,
+               open_id
+        from activity_user
+    </sql>
+
+    <select id="selectActivityUserList" parameterType="com.qnbc.venueReservation.domain.ActivityUser"
+            resultMap="ActivityUserResult">
+        select a.id,
+        a.activity_id,
+        a.deleted,
+        a.created_by,
+        a.created_time,
+        a.updated_by,
+        a.updated_time,
+        a.username_activity,
+        a.username_phone,
+        a.username_company,
+        b.activity_name as activityName
+        from activity_user a left join activity_info b on a.activity_id = b.id
+        <where>
+            <if test="activityId != null  and activityId != ''">and activity_id = #{activityId}</if>
+            <if test="deleted != null ">and deleted = #{deleted}</if>
+            <if test="createdBy != null  and createdBy != ''">and created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and updated_time = #{updatedTime}</if>
+            <if test="usernameActivity != null  and usernameActivity != ''">and username_activity =
+                #{usernameActivity}
+            </if>
+            <if test="usernamePhone != null  and usernamePhone != ''">and username_phone = #{usernamePhone}</if>
+            <if test="usernameCompany != null  and usernameCompany != ''">and username_company = #{usernameCompany}</if>
+        </where>
+    </select>
+
+    <select id="selectActivityUserById" parameterType="Long" resultMap="ActivityUserResult">
+        <include refid="selectActivityUserVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectActivityUserLastInfo" resultType="com.qnbc.venueReservation.domain.ActivityUser">
+        select *
+        from activity_user
+        where open_id = #{openId}
+        order by created_time desc limit 1
+    </select>
+
+    <insert id="insertActivityUser" parameterType="com.qnbc.venueReservation.domain.ActivityUser"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into activity_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">activity_id,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="usernameActivity != null">username_activity,</if>
+            <if test="usernamePhone != null">username_phone,</if>
+            <if test="usernameCompany != null">username_company,</if>
+            <if test="userPic != null">user_pic,</if>
+            <if test="openId != null">open_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">#{activityId},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="usernameActivity != null">#{usernameActivity},</if>
+            <if test="usernamePhone != null">#{usernamePhone},</if>
+            <if test="usernameCompany != null">#{usernameCompany},</if>
+            <if test="userPic != null">#{userPic},</if>
+            <if test="openId != null">#{openId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateActivityUser" parameterType="com.qnbc.venueReservation.domain.ActivityUser">
+        update activity_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="activityId != null">activity_id = #{activityId},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="usernameActivity != null">username_activity = #{usernameActivity},</if>
+            <if test="usernamePhone != null">username_phone = #{usernamePhone},</if>
+            <if test="usernameCompany != null">username_company = #{usernameCompany},</if>
+            <if test="userPic != null">user_pic = #{userPic},</if>
+            <if test="openId != null">open_id = #{openId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteActivityUserById" parameterType="Long">
+        delete
+        from activity_user
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteActivityUserByIds" parameterType="String">
+        delete from activity_user where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

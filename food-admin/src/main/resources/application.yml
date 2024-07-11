@@ -1,0 +1,22 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    name: food-admin
+  profiles:
+    #   配置采用哪个配置文件，默认dev本地
+    active: dev
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #扫描所有mybatis的xml文件
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
+

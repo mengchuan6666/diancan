@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.IntegralRecordMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.IntegralRecord" id="IntegralRecordResult">
+        <result property="id" column="id"/>
+        <result property="userIntegral" column="user_integral"/>
+        <result property="userId" column="user_id"/>
+        <result property="integralId" column="integral_id"/>
+        <result property="openId" column="open_id"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="integralType" column="integral_type"/>
+        <result property="message" column="message"/>
+    </resultMap>
+
+    <sql id="selectIntegralRecordVo">
+        select id,
+               user_integral,
+               user_id,
+               integral_id,
+               open_id,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time,
+               integral_type,
+               message
+        from integral_record
+    </sql>
+
+    <select id="selectIntegralRecordList" parameterType="com.qnbc.venueReservation.domain.IntegralRecord" resultMap="IntegralRecordResult">
+        select a.id,
+        a.user_integral,
+        b.username AS user_id,
+        a.integral_id,
+        a.open_id,
+        a.created_by,
+        a.created_time,
+        a.updated_by,
+        a.updated_time,
+        a.integral_type,
+        a.message
+        from integral_record a left join sys_user b on a.user_id = b.id
+        <where>
+            <if test="userId != null  and userId != ''">and b.username like concat('%', #{userId}, '%')</if>
+            <if test="openId != null  and openId != ''">and a.open_id = #{openId}</if>
+            <if test="userIntegral != null ">and a.user_integral = #{userIntegral}</if>
+            <if test="integralId != null  and integralId != ''">and a.integral_id = #{integralId}</if>
+            <if test="createdBy != null  and createdBy != ''">and a.created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and a.created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and a.updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and a.updated_time = #{updatedTime}</if>
+            <if test="integralType != null  and integralType != ''">and a.integral_type = #{integralType}</if>
+        </where>
+    </select>
+
+    <select id="selectIntegralRecordById" parameterType="Long" resultMap="IntegralRecordResult">
+        <include refid="selectIntegralRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertIntegralRecord" parameterType="com.qnbc.venueReservation.domain.IntegralRecord">
+        insert into integral_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userIntegral != null">user_integral,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="integralId != null">integral_id,</if>
+            <if test="openId != null">open_id,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="integralType != null">integral_type,</if>
+            <if test="message != null">message,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userIntegral != null">#{userIntegral},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="integralId != null">#{integralId},</if>
+            <if test="openId != null">#{openId},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="integralType != null">#{integralType},</if>
+            <if test="message != null">#{message},</if>
+        </trim>
+    </insert>
+
+    <update id="updateIntegralRecord" parameterType="com.qnbc.venueReservation.domain.IntegralRecord">
+        update integral_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userIntegral != null">user_integral = #{userIntegral},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="integralId != null">integral_id = #{integralId},</if>
+            <if test="openId != null">open_id = #{openId},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="integralType != null">integral_type = #{integralType},</if>
+            <if test="message != null">message = #{message},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIntegralRecordById" parameterType="Long">
+        delete
+        from integral_record
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteIntegralRecordByIds" parameterType="String">
+        delete from integral_record where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

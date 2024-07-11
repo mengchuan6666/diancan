@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.ExerciseTypeMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.ExerciseType" id="ExerciseTypeResult">
+        <result property="id" column="id"/>
+        <result property="exerciseTypeSign" column="exercise_type_sign"/>
+        <result property="exerciseTypeName" column="exercise_type_name"/>
+        <result property="pic" column="pic"/>
+        <result property="isHalfCourt" column="is_half_court"/>
+        <result property="deleted" column="deleted"/>
+        <result property="revision" column="revision"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <sql id="selectExerciseTypeVo">
+        select id,
+               exercise_type_sign,
+               pic,
+               exercise_type_name,
+               is_half_court,
+               deleted,
+               revision,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time
+        from exercise_type
+    </sql>
+
+    <select id="selectExerciseTypeList" parameterType="com.qnbc.venueReservation.domain.ExerciseType"
+            resultMap="ExerciseTypeResult">
+        <include refid="selectExerciseTypeVo"/>
+        <where>
+            <if test="exerciseTypeSign != null  and exerciseTypeSign != ''">and exercise_type_sign =
+                #{exerciseTypeSign}
+            </if>
+            <if test="exerciseTypeName != null  and exerciseTypeName != ''">and exercise_type_name like concat('%',
+                #{exerciseTypeName}, '%')
+            </if>
+            <if test="isHalfCourt != null  and isHalfCourt != ''">and is_half_court = #{isHalfCourt}</if>
+            <if test="deleted != null ">and deleted = #{deleted}</if>
+            <if test="revision != null ">and revision = #{revision}</if>
+            <if test="createdBy != null  and createdBy != ''">and created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+
+    <select id="selectExerciseTypeById" parameterType="Long" resultMap="ExerciseTypeResult">
+        <include refid="selectExerciseTypeVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectExerciseTypeBySign" resultType="com.qnbc.venueReservation.domain.ExerciseType">
+        select *
+        from exercise_type
+        where exercise_type_sign in
+        <foreach item="index" index="index" collection="exerciseTypeSign.split(',')" open="(" close=")" separator=",">
+            #{index}
+        </foreach>
+
+
+    </select>
+
+    <insert id="insertExerciseType" parameterType="com.qnbc.venueReservation.domain.ExerciseType">
+        insert into exercise_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="exerciseTypeSign != null and exerciseTypeSign != ''">exercise_type_sign,</if>
+            <if test="exerciseTypeName != null and exerciseTypeName != ''">exercise_type_name,</if>
+            <if test="pic != null and pic != ''">pic,</if>
+            <if test="isHalfCourt != null">is_half_court,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="revision != null">revision,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="exerciseTypeSign != null and exerciseTypeSign != ''">#{exerciseTypeSign},</if>
+            <if test="exerciseTypeName != null and exerciseTypeName != ''">#{exerciseTypeName},</if>
+            <if test="pic != null and pic != ''">#{pic},</if>
+            <if test="isHalfCourt != null">#{isHalfCourt},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="revision != null">#{revision},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateExerciseType" parameterType="com.qnbc.venueReservation.domain.ExerciseType">
+        update exercise_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="exerciseTypeSign != null and exerciseTypeSign != ''">exercise_type_sign = #{exerciseTypeSign},
+            </if>
+            <if test="exerciseTypeName != null and exerciseTypeName != ''">exercise_type_name = #{exerciseTypeName},
+            </if>
+            <if test="pic != null and pic != ''">pic = #{pic},
+            </if>
+            <if test="isHalfCourt != null">is_half_court = #{isHalfCourt},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="revision != null">revision = #{revision},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteExerciseTypeById" parameterType="Long">
+        delete
+        from exercise_type
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteExerciseTypeByIds" parameterType="String">
+        delete from exercise_type where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

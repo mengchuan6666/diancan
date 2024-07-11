@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.SuggestInfoMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.SuggestInfo" id="SuggestInfoResult">
+        <result property="id"    column="id"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="content"    column="content"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+        <result property="reply"    column="reply"    />
+    </resultMap>
+
+    <sql id="selectSuggestInfoVo">
+        select id, nickname, content, created_by, created_time, updated_by, updated_time, reply from suggest_info
+    </sql>
+
+    <select id="selectSuggestInfoList" parameterType="com.qnbc.venueReservation.domain.SuggestInfo" resultMap="SuggestInfoResult">
+        <include refid="selectSuggestInfoVo"/>
+        <where>
+            <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+            <if test="reply != null  and reply != ''"> and reply = #{reply}</if>
+        </where>
+    </select>
+
+    <select id="selectSuggestInfoById" parameterType="Long" resultMap="SuggestInfoResult">
+        <include refid="selectSuggestInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSuggestInfo" parameterType="com.qnbc.venueReservation.domain.SuggestInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into suggest_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nickname != null">nickname,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="reply != null">reply,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nickname != null">#{nickname},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="reply != null">#{reply},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSuggestInfo" parameterType="com.qnbc.venueReservation.domain.SuggestInfo">
+        update suggest_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="reply != null">reply = #{reply},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSuggestInfoById" parameterType="Long">
+        delete from suggest_info where id = #{id}
+    </delete>
+
+    <delete id="deleteSuggestInfoByIds" parameterType="String">
+        delete from suggest_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.PaySetMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.PaySet" id="PaySetResult">
+        <result property="id" column="id"/>
+        <result property="payStart" column="pay_start"/>
+        <result property="conversionRatio" column="conversion_ratio"/>
+        <result property="paySetType" column="pay_set_type"/>
+        <result property="refundPic" column="refund_pic"/>
+        <result property="integralValidity" column="integral_validity"/>
+        <result property="deleted" column="deleted"/>
+        <result property="revision" column="revision"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <sql id="selectPaySetVo">
+        select id,
+               pay_start,
+               conversion_ratio,
+               pay_set_type,
+               integral_validity,
+               deleted,
+               revision,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time,
+               refund_pic
+        from pay_set
+    </sql>
+
+    <select id="selectPaySetList" parameterType="com.qnbc.venueReservation.domain.PaySet" resultMap="PaySetResult">
+        <include refid="selectPaySetVo"/>
+        <where>
+            <if test="payStart != null  and payStart != ''">and pay_start = #{payStart}</if>
+            <if test="conversionRatio != null  and conversionRatio != ''">and conversion_ratio = #{conversionRatio}</if>
+            <if test="paySetType != null  and paySetType != ''">and pay_set_type = #{paySetType}</if>
+            <if test="integralValidity != null  and integralValidity != ''">and integral_validity =
+                #{integralValidity}
+            </if>
+            <if test="deleted != null ">and deleted = #{deleted}</if>
+            <if test="revision != null ">and revision = #{revision}</if>
+            <if test="createdBy != null  and createdBy != ''">and created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+
+    <select id="selectPaySetById" parameterType="Long" resultMap="PaySetResult">
+        <include refid="selectPaySetVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPaySet" parameterType="com.qnbc.venueReservation.domain.PaySet">
+        insert into pay_set
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="payStart != null">pay_start,</if>
+            <if test="conversionRatio != null">conversion_ratio,</if>
+            <if test="paySetType != null">pay_set_type,</if>
+            <if test="integralValidity != null">integral_validity,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="revision != null">revision,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="refundPic != null">refund_pic,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="payStart != null">#{payStart},</if>
+            <if test="conversionRatio != null">#{conversionRatio},</if>
+            <if test="paySetType != null">#{paySetType},</if>
+            <if test="integralValidity != null">#{integralValidity},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="revision != null">#{revision},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="refundPic != null">#{refundPic},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePaySet" parameterType="com.qnbc.venueReservation.domain.PaySet">
+        update pay_set
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="payStart != null">pay_start = #{payStart},</if>
+            <if test="conversionRatio != null">conversion_ratio = #{conversionRatio},</if>
+            <if test="paySetType != null">pay_set_type = #{paySetType},</if>
+            <if test="integralValidity != null">integral_validity = #{integralValidity},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="revision != null">revision = #{revision},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="refundPic != null">refund_pic = #{refundPic},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePaySetById" parameterType="Long">
+        delete
+        from pay_set
+        where id = #{id}
+    </delete>
+
+    <delete id="deletePaySetByIds" parameterType="String">
+        delete from pay_set where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

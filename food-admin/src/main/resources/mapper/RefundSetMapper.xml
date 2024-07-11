@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.RefundSetMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.RefundSet" id="RefundSetResult">
+        <result property="id" column="id"/>
+        <result property="refundPic" column="refund_pic"/>
+    </resultMap>
+
+    <sql id="selectRefundSetVo">
+        select id, refund_pic
+        from refund_set
+    </sql>
+
+    <select id="selectRefundSetList" parameterType="com.qnbc.venueReservation.domain.RefundSet"
+            resultMap="RefundSetResult">
+        <include refid="selectRefundSetVo"/>
+        <where>
+            <if test="refundPic != null  and refundPic != ''">and refund_pic = #{refundPic}</if>
+        </where>
+    </select>
+
+    <select id="selectRefundSetById" parameterType="Long" resultMap="RefundSetResult">
+        <include refid="selectRefundSetVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectRefundSet" resultType="com.qnbc.venueReservation.domain.RefundSet">
+        select *
+        from refund_set
+        order by id limit 1;
+    </select>
+
+    <insert id="insertRefundSet" parameterType="com.qnbc.venueReservation.domain.RefundSet">
+        insert into refund_set
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="refundPic != null">refund_pic,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="refundPic != null">#{refundPic},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRefundSet" parameterType="com.qnbc.venueReservation.domain.RefundSet">
+        update refund_set
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="refundPic != null">refund_pic = #{refundPic},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRefundSetById" parameterType="Long">
+        delete
+        from refund_set
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteRefundSetByIds" parameterType="String">
+        delete from refund_set where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

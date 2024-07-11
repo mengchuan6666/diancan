@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.AboutMeMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.AboutMe" id="AboutMeResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="content" column="content"/>
+        <result property="pic" column="pic"/>
+    </resultMap>
+
+    <sql id="selectAboutMeVo">
+        select id, name, content, pic,phone,address
+        from about_me
+    </sql>
+
+    <select id="selectAboutMeList" parameterType="com.qnbc.venueReservation.domain.AboutMe" resultMap="AboutMeResult">
+        <include refid="selectAboutMeVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="pic != null  and pic != ''">and pic = #{pic}</if>
+        </where>
+    </select>
+
+    <select id="selectAboutMeById" parameterType="Long" resultMap="AboutMeResult">
+        <include refid="selectAboutMeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAboutMe" parameterType="com.qnbc.venueReservation.domain.AboutMe">
+        insert into about_me
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="content != null">content,</if>
+            <if test="pic != null">pic,</if>
+            <if test="phone != null">phone,</if>
+            <if test="address != null">address,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="content != null">#{content},</if>
+            <if test="pic != null">#{pic},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="address != null">#{address},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAboutMe" parameterType="com.qnbc.venueReservation.domain.AboutMe">
+        update about_me
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="pic != null">pic = #{pic},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAboutMeById" parameterType="Long">
+        delete
+        from about_me
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteAboutMeByIds" parameterType="String">
+        delete from about_me where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

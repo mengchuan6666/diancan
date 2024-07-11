@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.VenueInfoMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.VenueInfo" id="VenueInfoResult">
+        <result property="id" column="id"/>
+        <result property="venueName" column="venue_name"/>
+        <result property="pic1" column="pic1"/>
+        <result property="pic2" column="pic2"/>
+        <result property="pic3" column="pic3"/>
+        <result property="venueAddress" column="venue_address"/>
+        <result property="venueDobusDate" column="venue_dobus_date"/>
+        <result property="dobusStartTime" column="dobus_start_time"/>
+        <result property="dobusEndTime" column="dobus_end_time"/>
+        <result property="deleted" column="deleted"/>
+        <result property="revision" column="revision"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="exerciseTypeName" column="exercise_type_name"/>
+        <result property="exerciseTypeSign" column="exercise_type_sign"/>
+        <result property="backAppointment" column="back_appointment"/>
+        <result property="phone" column="phone"/>
+        <result property="siteNum" column="site_num"/>
+    </resultMap>
+
+    <sql id="selectVenueInfoVo">
+        select id,
+               venue_name,
+               pic1,
+               pic2,
+               pic3,
+               venue_address,
+               venue_dobus_date,
+               dobus_start_time,
+               dobus_end_time,
+               deleted,
+               revision,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time,
+               exercise_type_name,
+               exercise_type_sign,
+               back_appointment,
+            phone,
+               site_num
+        from venue_info
+    </sql>
+
+    <select id="selectVenueInfoList" parameterType="com.qnbc.venueReservation.domain.VenueInfo"
+            resultMap="VenueInfoResult">
+        <include refid="selectVenueInfoVo"/>
+        <where>
+            <if test="venueName != null  and venueName != ''">and venue_name like concat('%', #{venueName}, '%')</if>
+            <if test="pic1 != null  and pic1 != ''">and pic1 = #{pic1}</if>
+            <if test="pic2 != null  and pic2 != ''">and pic2 = #{pic2}</if>
+            <if test="pic3 != null  and pic3 != ''">and pic3 = #{pic3}</if>
+            <if test="venueAddress != null  and venueAddress != ''">and venue_address = #{venueAddress}</if>
+            <if test="venueDobusDate != null  and venueDobusDate != ''">and venue_dobus_date = #{venueDobusDate}</if>
+            <if test="dobusStartTime != null  and dobusStartTime != ''">and dobus_start_time = #{dobusStartTime}</if>
+            <if test="dobusEndTime != null  and dobusEndTime != ''">and dobus_end_time = #{dobusEndTime}</if>
+            <if test="deleted != null ">and deleted = #{deleted}</if>
+            <if test="revision != null ">and revision = #{revision}</if>
+            <if test="createdBy != null  and createdBy != ''">and created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and updated_time = #{updatedTime}</if>
+            <if test="exerciseTypeSign != null ">and exercise_type_sign = #{exerciseTypeSign}</if>
+            <if test="exerciseTypeName != null  and exerciseTypeName != ''">and exercise_type_name like
+                concat('%',#{exerciseTypeName},'%')
+            </if>
+
+        </where>
+    </select>
+
+    <select id="selectVenueInfoById" parameterType="Long" resultMap="VenueInfoResult">
+        <include refid="selectVenueInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertVenueInfo" parameterType="com.qnbc.venueReservation.domain.VenueInfo" useGeneratedKeys="true"
+            keyColumn="id" keyProperty="id">
+        insert into venue_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="venueName != null">venue_name,</if>
+            <if test="pic1 != null">pic1,</if>
+            <if test="pic2 != null">pic2,</if>
+            <if test="pic3 != null">pic3,</if>
+            <if test="venueAddress != null">venue_address,</if>
+            <if test="venueDobusDate != null">venue_dobus_date,</if>
+            <if test="dobusStartTime != null">dobus_start_time,</if>
+            <if test="dobusEndTime != null">dobus_end_time,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="revision != null">revision,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="exerciseTypeName != null">exercise_type_name,</if>
+            <if test="exerciseTypeSign != null">exercise_type_sign,</if>
+            <if test="backAppointment != null">back_appointment,</if>
+            <if test="phone != null">phone,</if>
+            <if test="siteNum != null">site_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="venueName != null">#{venueName},</if>
+            <if test="pic1 != null">#{pic1},</if>
+            <if test="pic2 != null">#{pic2},</if>
+            <if test="pic3 != null">#{pic3},</if>
+            <if test="venueAddress != null">#{venueAddress},</if>
+            <if test="venueDobusDate != null">#{venueDobusDate},</if>
+            <if test="dobusStartTime != null">#{dobusStartTime},</if>
+            <if test="dobusEndTime != null">#{dobusEndTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="revision != null">#{revision},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="exerciseTypeName != null">#{exerciseTypeName},</if>
+            <if test="exerciseTypeSign != null">#{exerciseTypeSign},</if>
+            <if test="backAppointment != null">#{backAppointment},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="siteNum != null">#{siteNum},</if>
+        </trim>
+    </insert>
+
+    <update id="updateVenueInfo" parameterType="com.qnbc.venueReservation.domain.VenueInfo">
+        update venue_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="venueName != null">venue_name = #{venueName},</if>
+            <if test="pic1 != null">pic1 = #{pic1},</if>
+            <if test="pic2 != null">pic2 = #{pic2},</if>
+            <if test="pic3 != null">pic3 = #{pic3},</if>
+            <if test="venueAddress != null">venue_address = #{venueAddress},</if>
+            <if test="venueDobusDate != null">venue_dobus_date = #{venueDobusDate},</if>
+            <if test="dobusStartTime != null">dobus_start_time = #{dobusStartTime},</if>
+            <if test="dobusEndTime != null">dobus_end_time = #{dobusEndTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="revision != null">revision = #{revision},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="exerciseTypeName != null">exercise_type_name = #{exerciseTypeName},</if>
+            <if test="exerciseTypeSign != null">exercise_type_sign = #{exerciseTypeSign},</if>
+            <if test="backAppointment != null">back_appointment = #{backAppointment},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="siteNum != null">site_num = #{siteNum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVenueInfoById" parameterType="Long">
+        delete
+        from venue_info
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteVenueInfoByIds" parameterType="String">
+        delete from venue_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

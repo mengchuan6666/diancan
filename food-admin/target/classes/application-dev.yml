@@ -1,0 +1,76 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/orderfood?serverTimezone=GMT%2b8
+    username: root
+    password: 123456
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  web:
+    resources:
+      static-locations: classpath:static/,file:static/
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+Food:
+  log:
+    directory: ./logs/
+    level: INFO # DEBUG INFO
+    appender:
+      datePattern: yyyy-MM-dd
+      maxHistory: 30
+      queueSize: 10240
+      maxFlushTime: 3000
+
+
+bigTypeImagesFilePath: /Users/gzj/Documents/workspace/zzzmywork/GraduationDesign/订餐/food/picfile/bigTypeImgs/
+
+picfile: /Users/gzj/Documents/workspace/zzzmywork/GraduationDesign/订餐/food/picfile
+
+productImagesFilePath: /Users/gzj/Documents/workspace/zzzmywork/GraduationDesign/订餐/food/picfile/productImgs/
+
+swiperImagesFilePath: /Users/gzj/Documents/workspace/zzzmywork/GraduationDesign/订餐/food/picfile/swiperImgs/
+
+productSwiperImagesFilePath: /Users/gzj/Documents/workspace/zzzmywork/GraduationDesign/订餐/food/picfile/productSwiperImgs/
+
+
+weixin:
+  jscode2sessionUrl: https://api.weixin.qq.com/sns/jscode2session
+  appid: wx78345ba808f9753a
+  secret: 627d389e868500d24b017d075fe6e95f
+
+
+minio:
+  endpoint: http://127.0.0.1:9090
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: food
+
+
+alipay:
+  url: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+  # 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
+  appId: 9021000133645193
+  # 商户私钥，您的PKCS8格式RSA2私钥
+  privateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCcz/yF6GJeuyjMmaZKzM9EFR+rcO2moko90ArTNQifz1lr8nnv1v/vpN+B1O4gtIAVsFhKfHuiKlu+avm90vB9/WJ+nKxYHhgIS3lYwjozEkzUPisfapj5wp0trq5c6XAWsbGMTcF1i+j3C4jHO9FOF6ueoK1FHOj4ktH9GkmtQ8kLMQMrWucpuWTtQ4mq9Cs3oVAwLYm1VBv0UQjU6HPV7/QpNAU9Ehbhuu/LJrZwMSkvkGEkKpsBSjsQziRaMXbrJsuyDfB3HHUByUITOsbCeLFoLWKOOcDj1cQOvKYIYZ/NsbsekFN4c0eFBsouy+AqgFk+wlpv/jyVPHqsBcOBAgMBAAECggEAF4v/vlfb1Z/DC54S426HvRBy9fp6JSh/f3Kq/XYcOmsXYWdCuioNun2Gdmdz7oNMLHWTfHPe2MYFir1jjQaMyE5xKNP76StzrmMu8I4R0TNxR/mh3hDSscZwdbiiRB9ljnLWV1whrbX5oIch3dD0qAZT5fj4q8UgkprxX1FAOP0UqFlE+hv4QHP5lm3MlhrIGkANyz/TUYwP6DE0qnxH0syo6N1CTM03rsvEKI8wxJvz3eo+wjKNa/E/6U5XshjIBsFu8Lz3nXcrdZ8rtilE0spFgh+DW1AUiJ9a+IXe9nLXAV3j8a+TVfd/6r65YCZ5tPGfzwr5fwKccbCUk1TfAQKBgQDvJAhXMtklcvplVQ680RUuneKzVCv6ddR4W8pZMPN/MGubx4vxJj32m6iLxsNJCDD6fgn4ioabpiNWDEZ7yfEwNdwQCf1pjwk4iSnYGirJd/VhdNyJH4PA+6pMMs2ojuM7dKD0jggvJz/fKd3cN8X2NTiGe0qg75sZyPxXLyycMQKBgQCn3huoDw/ivXpLnzGgStAGBEQqXZb+NmJIq+3pbLs5MLqx/BhSrSXZJvKnv4Vx1XJ/9qPqoXZueS4hVC1QKGRukrU29OKaj8O27DX422hOWRP+BfeO4cinx8/Oiiae4Xmr9UEF1zkp+Vtra1mFFNAEdIEp6vZET4E/dQAPaE/YUQKBgQDK05PjaXQ1SBTKF19dlDRUCoN5t/1o+8FOqAOyrEsJ6GaMhK3TxayuWg2VJ+sAKVtpSbdpPwy2PS4hUF4Dph7T1gqk6+QsQK4Abo24BVGe+Qh9NSHLh5g2+PzSjhBSU4a1KdFOOp0EaVTKEXdjzUYw8ajUnwOIBlFViFtGEvPSMQKBgC/BS/TfdBF4/dWNkDydi9hqVkoHHfFr30H1R1VkjU6TwkjoArNidqX0Iov+PCRKKKymqbMSA/MhnjH1FH79PrUGH29m8yAtTew3/pKxOFcxmDJn2ClZqg+xFDkZrCr+0fJNbxYOSEDco1lHzMvDQ/pAeo5GPZDpXUeELWQ0tKJBAoGALQJnr/fm0TQzftWwH8XWbGN+vCSqK+3Q0f6SpnN8SZfbXCGtxJUklbCBz1bsN9JR/a46hHM8YDla+pXZDx4TyJEZJvYlUGw0jme6P4mwomF2MqKFfDsP0dazZzVbMtSRuWLEB50cI4lUtTD+3NxpZj9T1hrD4ZN10LmO8AkSB4E=
+  # 支付宝公钥,查看地址：https://openhome.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArQC+p0BO4VhDA2uCDoWQ4I/Hwii17KtKaJoA6gFditwq3X1WOc9xGNuFB36/Fasfk364Xo40qMRmnIaq0O2CGW1pvd5+gpQbERc0qHSpcm5ab7Mtzi/w7ErpyqQ6mnkjk2TbWfYmaJeAsZyOfj85mhbkkCXOcEnQsJpZGavCAT9iG0WgR72ujEDRWa79sectw3YItsHzGAECmUv/Sz/RXVBGagRmIX3SwWVlovtHlQI23cfPqUpsaZ8xbrgXWj3Sr3xN3GBUSqxuoDvXPPLXlNLQ1v3pEzCGH+9+XI6ALtAeABQPXzX0Q59/qTn+HkdtAmPg/VJkWaYm/AwDq2oSwwIDAQAB
+  # 服务器异步通知页面路径需http://格式的完整路径，不能加?id=123这类自定义参数
+  notifyUrl: www.baidu.com
+  # 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数
+  returnUrl:
+  # 签名方式
+  signType: RSA2
+  # 字符编码格式
+  charset: utf-8
+  # 支付宝网关
+  gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+
+
+knife4j:
+  enable: true # 开启增强配置
+  production: false # 开启生产环境屏蔽

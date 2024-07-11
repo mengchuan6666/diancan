@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.CollectMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.Collect" id="CollectResult">
+        <result property="id"    column="id"    />
+        <result property="userid"    column="userId"    />
+        <result property="productid"    column="productId"    />
+    </resultMap>
+
+    <sql id="selectCollectVo">
+        select id, userId, productId from collect
+    </sql>
+
+    <select id="selectCollectList" parameterType="com.qnbc.venueReservation.domain.Collect" resultMap="CollectResult">
+        <include refid="selectCollectVo"/>
+        <where>
+            <if test="userid != null  and userid != ''"> and userId = #{userid}</if>
+            <if test="productid != null "> and productId = #{productid}</if>
+        </where>
+    </select>
+
+    <select id="selectCollectById" parameterType="Long" resultMap="CollectResult">
+        <include refid="selectCollectVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCollect" parameterType="com.qnbc.venueReservation.domain.Collect" useGeneratedKeys="true" keyProperty="id">
+        insert into collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userid != null">userId,</if>
+            <if test="productid != null">productId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userid != null">#{userid},</if>
+            <if test="productid != null">#{productid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCollect" parameterType="com.qnbc.venueReservation.domain.Collect">
+        update collect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userid != null">userId = #{userid},</if>
+            <if test="productid != null">productId = #{productid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCollectById" parameterType="Long">
+        delete from collect where id = #{id}
+    </delete>
+
+    <delete id="deleteCollectByIds" parameterType="String">
+        delete from collect where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

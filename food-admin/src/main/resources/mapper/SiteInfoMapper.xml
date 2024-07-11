@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.SiteInfoMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.SiteInfo" id="SiteInfoResult">
+        <result property="id" column="id"/>
+        <result property="exerciseTypeSign" column="exercise_type_sign"/>
+        <result property="isExerciseType" column="is_exercise_type"/>
+        <result property="exerciseTypeName" column="exercise_type_name"/>
+        <result property="venueId" column="venue_id"/>
+        <result property="venueName" column="venue_name"/>
+        <result property="siteName" column="site_name"/>
+        <result property="openTime" column="open_time"/>
+        <result property="closeTime" column="close_time"/>
+        <result property="siteAddress" column="site_address"/>
+        <result property="siteRole" column="site_role"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="siteFeeId" column="site_fee_id"/>
+        <result property="siteStatus" column="site_status"/>
+
+        <result property="feeTimeStudent" column="fee_time_student"/>
+        <result property="feeTimeTeacher" column="fee_time_teacher"/>
+        <result property="feeTimeVip" column="fee_time_vip"/>
+        <result property="siteFeeWorkDay" column="site_fee_work_day"/>
+        <result property="siteFeeHolidayDay" column="site_fee_holiday_day"/>
+        <result property="siteFeeWorkNight" column="site_fee_work_night"/>
+        <result property="siteFeeHolidayNight" column="site_fee_holiday_night"/>
+
+    </resultMap>
+
+    <sql id="selectSiteInfoVo">
+        select id,
+               exercise_type_sign,
+               is_exercise_type,
+               exercise_type_name,
+               venue_id,
+               venue_name,
+               site_name,
+               open_time,
+               close_time,
+               site_address,
+               site_role,
+               deleted,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time,
+               site_status,
+               fee_time_student,
+               fee_time_teacher,
+               fee_time_vip,
+               site_fee_work_day,
+               site_fee_holiday_day,
+               site_fee_work_night,
+               site_fee_holiday_night,
+               fee_time_day,
+               fee_time_night,
+            site_fee_id
+        from site_info
+    </sql>
+
+    <select id="selectSiteInfoList" parameterType="com.qnbc.venueReservation.domain.SiteInfo"
+            resultMap="SiteInfoResult">
+        <include refid="selectSiteInfoVo"/>
+        <where>
+            <if test="exerciseTypeSign != null  and exerciseTypeSign != ''">and exercise_type_sign =
+                #{exerciseTypeSign}
+            </if>
+            <if test="isExerciseType != null  and isExerciseType != ''">and is_exercise_type = #{isExerciseType}</if>
+            <if test="exerciseTypeName != null  and exerciseTypeName != ''">and exercise_type_name like concat('%',
+                #{exerciseTypeName}, '%')
+            </if>
+            <if test="venueId != null  and venueId != ''">and venue_id = #{venueId}</if>
+            <if test="venueName != null  and venueName != ''">and venue_name like concat('%', #{venueName}, '%')</if>
+            <if test="siteName != null  and siteName != ''">and site_name like concat('%', #{siteName}, '%')</if>
+            <if test="openTime != null  and openTime != ''">and open_time = #{openTime}</if>
+            <if test="closeTime != null  and closeTime != ''">and close_time = #{closeTime}</if>
+            <if test="siteAddress != null  and siteAddress != ''">and site_address = #{siteAddress}</if>
+            <if test="siteRole != null  and siteRole != ''">and site_role like concat('%', #{siteRole}, '%')</if>
+            <if test="deleted != null ">and deleted = #{deleted}</if>
+            <if test="siteStatus != null ">and site_status = #{siteStatus}</if>
+            <if test="createdBy != null  and createdBy != ''">and created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+
+    <select id="selectSiteInfoById" parameterType="Long" resultMap="SiteInfoResult">
+        <include refid="selectSiteInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSiteInfo" parameterType="com.qnbc.venueReservation.domain.SiteInfo">
+        insert into site_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="exerciseTypeSign != null">exercise_type_sign,</if>
+            <if test="isExerciseType != null">is_exercise_type,</if>
+            <if test="exerciseTypeName != null">exercise_type_name,</if>
+            <if test="venueId != null">venue_id,</if>
+            <if test="venueName != null">venue_name,</if>
+            <if test="siteName != null">site_name,</if>
+            <if test="openTime != null">open_time,</if>
+            <if test="closeTime != null">close_time,</if>
+            <if test="siteAddress != null">site_address,</if>
+            <if test="siteRole != null">site_role,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="siteFeeId != null">site_fee_id,</if>
+            <if test="siteStatus != null">site_status,</if>
+
+            <if test=" feeTimeStudent != null">fee_time_student,</if>
+            <if test="feeTimeTeacher != null">fee_time_teacher,</if>
+            <if test=" feeTimeVip != null">fee_time_vip,</if>
+            <if test="siteFeeWorkDay != null">site_fee_work_day,</if>
+            <if test=" siteFeeHolidayDay != null">site_fee_holiday_day,</if>
+            <if test=" siteFeeWorkNight != null">site_fee_work_night,</if>
+            <if test=" siteFeeHolidayNight != null">site_fee_holiday_night,</if>
+            <if test="feeTimeDay != null">fee_time_day,</if>
+            <if test="feeTimeNight != null">fee_time_night,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="exerciseTypeSign != null">#{exerciseTypeSign},</if>
+            <if test="isExerciseType != null">#{isExerciseType},</if>
+            <if test="exerciseTypeName != null">#{exerciseTypeName},</if>
+            <if test="venueId != null">#{venueId},</if>
+            <if test="venueName != null">#{venueName},</if>
+            <if test="siteName != null">#{siteName},</if>
+            <if test="openTime != null">#{openTime},</if>
+            <if test="closeTime != null">#{closeTime},</if>
+            <if test="siteAddress != null">#{siteAddress},</if>
+            <if test="siteRole != null">#{siteRole},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="feeTime != null">#{feeTime},</if>
+            <if test="siteFee != null">#{siteFee},</if>
+            <if test="siteFeeId != null">#{siteFeeId},</if>
+            <if test="siteStatus != null">#{siteStatus},</if>
+
+            <if test=" feeTimeStudent != null">#{feeTimeStudent},</if>
+            <if test="feeTimeTeacher != null">#{feeTimeTeacher},</if>
+            <if test=" feeTimeVip != null">#{feeTimeVip},</if>
+            <if test="siteFeeWorkDay != null">#{siteFeeWorkDay},</if>
+            <if test=" siteFeeHolidayDay != null">#{siteFeeHolidayDay},</if>
+            <if test=" siteFeeWorkNight != null">#{siteFeeWorkNight},</if>
+            <if test=" siteFeeHolidayNight != null">#{siteFeeHolidayNight},</if>
+
+            <if test="feeTimeDay != null">#{feeTimeDay},</if>
+            <if test="feeTimeNight != null">#{feeTimeNight},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSiteInfo" parameterType="com.qnbc.venueReservation.domain.SiteInfo">
+        update site_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="exerciseTypeSign != null">exercise_type_sign = #{exerciseTypeSign},</if>
+            <if test="isExerciseType != null">is_exercise_type = #{isExerciseType},</if>
+            <if test="exerciseTypeName != null">exercise_type_name = #{exerciseTypeName},</if>
+            <if test="venueId != null">venue_id = #{venueId},</if>
+            <if test="venueName != null">venue_name = #{venueName},</if>
+            <if test="siteName != null">site_name = #{siteName},</if>
+            <if test="openTime != null">open_time = #{openTime},</if>
+            <if test="closeTime != null">close_time = #{closeTime},</if>
+            <if test="siteAddress != null">site_address = #{siteAddress},</if>
+            <if test="siteRole != null">site_role = #{siteRole},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="siteFeeId != null">site_fee_id = #{siteFeeId},</if>
+            <if test="siteStatus != null">site_status = #{siteStatus},</if>
+
+            <if test=" feeTimeStudent != null">fee_time_student = #{feeTimeStudent},</if>
+            <if test="feeTimeTeacher != null">fee_time_teacher = #{feeTimeTeacher},</if>
+            <if test=" feeTimeVip != null">fee_time_vip = #{feeTimeVip},</if>
+            <if test="siteFeeWorkDay != null">site_fee_work_day = #{siteFeeWorkDay},</if>
+            <if test=" siteFeeHolidayDay != null">site_fee_holiday_day = #{siteFeeHolidayDay},</if>
+            <if test=" siteFeeWorkNight != null">site_fee_work_night = #{siteFeeWorkNight},</if>
+            <if test=" siteFeeHolidayNight != null">site_fee_holiday_night = #{siteFeeHolidayNight},</if>
+
+            <if test="feeTimeDay != null">fee_time_day = #{feeTimeDay},</if>
+            <if test="feeTimeNight != null">fee_time_night = #{feeTimeNight},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSiteInfoById" parameterType="Long">
+        delete
+        from site_info
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteSiteInfoByIds" parameterType="String">
+        delete from site_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

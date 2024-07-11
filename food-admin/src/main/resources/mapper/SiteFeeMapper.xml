@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.SiteFeeMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.SiteFee" id="SiteFeeResult">
+        <result property="id" column="id"/>
+        <result property="siteId" column="site_id"/>
+        <result property="siteName" column="site_name"/>
+        <result property="feeTimeDay" column="fee_time_day"/>
+        <result property="feeTimeNight" column="fee_time_night"/>
+        <result property="siteFee" column="site_fee"/>
+        <result property="deleted" column="deleted"/>
+        <result property="revision" column="revision"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <sql id="selectSiteFeeVo">
+        select id,
+               site_id,
+               site_name,
+               fee_time_day,
+               fee_time_night,
+               site_fee,
+               deleted,
+               revision,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time
+        from site_fee
+    </sql>
+
+    <select id="selectSiteFeeList" parameterType="com.qnbc.venueReservation.domain.SiteFee" resultMap="SiteFeeResult">
+        <include refid="selectSiteFeeVo"/>
+        <where>
+            <if test="siteId != null  and siteId != ''">and site_id = #{siteId}</if>
+            <if test="siteName != null  and siteName != ''">and site_name like concat('%', #{siteName}, '%')</if>
+            <if test="siteFee != null  and siteFee != ''">and site_fee = #{siteFee}</if>
+            <if test="deleted != null ">and deleted = #{deleted}</if>
+            <if test="revision != null ">and revision = #{revision}</if>
+            <if test="createdBy != null  and createdBy != ''">and created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+
+    <select id="selectSiteFeeById" parameterType="Long" resultMap="SiteFeeResult">
+        <include refid="selectSiteFeeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSiteFee" parameterType="com.qnbc.venueReservation.domain.SiteFee">
+        insert into site_fee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="siteId != null">site_id,</if>
+            <if test="siteName != null">site_name,</if>
+            <if test="feeTimeDay != null">fee_time_day,</if>
+            <if test="feeTimeNight != null">fee_time_night,</if>
+            <if test="siteFee != null">site_fee,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="revision != null">revision,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="siteId != null">#{siteId},</if>
+            <if test="siteName != null">#{siteName},</if>
+            <if test="feeTimeDay != null">#{feeTimeDay},</if>
+            <if test="feeTimeNight != null">#{feeTimeNight},</if>
+            <if test="siteFee != null">#{siteFee},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="revision != null">#{revision},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSiteFee" parameterType="com.qnbc.venueReservation.domain.SiteFee">
+        update site_fee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null">site_id = #{siteId},</if>
+            <if test="siteName != null">site_name = #{siteName},</if>
+            <if test="feeTimeDay != null">fee_time_day = #{feeTimeDay},</if>
+            <if test="feeTimeNight != null">fee_time_night = #{feeTimeNight},</if>
+            <if test="siteFee != null">site_fee = #{siteFee},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="revision != null">revision = #{revision},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSiteFeeById" parameterType="Long">
+        delete
+        from site_fee
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteSiteFeeByIds" parameterType="String">
+        delete from site_fee where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.CartMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.Cart" id="CartResult">
+        <result property="id" column="id"/>
+        <result property="productid" column="productId"/>
+        <result property="userid" column="userId"/>
+        <result property="num" column="num"/>
+        <result property="createTime" column="create_time"/>
+        <result property="size" column="size"/>
+    </resultMap>
+
+    <sql id="selectCartVo">
+        select id, productId, userId, num, create_time, size
+        from cart
+    </sql>
+
+    <select id="selectCartList" parameterType="com.qnbc.venueReservation.domain.Cart" resultMap="CartResult">
+        <include refid="selectCartVo"/>
+        <where>
+            <if test="productid != null ">and productId = #{productid}</if>
+            <if test="userid != null  and userid != ''">and userId = #{userid}</if>
+            <if test="num != null ">and num = #{num}</if>
+            <if test="createTime != null ">and createTime = #{createTime}</if>
+            <if test="size != null  and size != ''">and size = #{size}</if>
+        </where>
+    </select>
+
+    <select id="selectCartById" parameterType="Long" resultMap="CartResult">
+        <include refid="selectCartVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCart" parameterType="com.qnbc.venueReservation.domain.Cart" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productid != null">productId,</if>
+            <if test="userid != null">userId,</if>
+            <if test="num != null">num,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="size != null">size,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productid != null">#{productid},</if>
+            <if test="userid != null">#{userid},</if>
+            <if test="num != null">#{num},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="size != null">#{size},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCart" parameterType="com.qnbc.venueReservation.domain.Cart">
+        update cart
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productid != null">productId = #{productid},</if>
+            <if test="userid != null">userId = #{userid},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="size != null">size = #{size},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCartById" parameterType="Long">
+        delete
+        from cart
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteCartByIds" parameterType="String">
+        delete from cart where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

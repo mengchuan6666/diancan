@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.WxPayInfoMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.WxPayInfo" id="WxPayInfoResult">
+        <result property="id" column="id"/>
+        <result property="appId" column="appid"/>
+        <result property="timeStamp" column="time_stamp"/>
+        <result property="nonceStr" column="nonce_str"/>
+        <result property="packageVal" column="package_val"/>
+        <result property="signType" column="sign_type"/>
+        <result property="paySign" column="pay_sign"/>
+    </resultMap>
+
+    <sql id="selectWxPayInfoVo">
+        select id, appid, time_stamp, nonce_str, package_val, sign_type, pay_sign
+        from wx_pay_info
+    </sql>
+
+    <select id="selectWxPayInfoList" parameterType="com.qnbc.venueReservation.domain.WxPayInfo"
+            resultMap="WxPayInfoResult">
+        <include refid="selectWxPayInfoVo"/>
+        <where>
+            <if test="appId != null  and appId != ''">and appid = #{appId}</if>
+            <if test="timeStamp != null  and timeStamp != ''">and time_stamp = #{timeStamp}</if>
+            <if test="nonceStr != null  and nonceStr != ''">and nonce_str = #{nonceStr}</if>
+            <if test="packageVal != null  and packageVal != ''">and package_val = #{package}</if>
+            <if test="signType != null  and signType != ''">and sign_type = #{signType}</if>
+            <if test="paySign != null  and paySign != ''">and pay_sign = #{paySign}</if>
+        </where>
+    </select>
+
+    <select id="selectWxPayInfoById" parameterType="string" resultMap="WxPayInfoResult">
+        <include refid="selectWxPayInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWxPayInfo" parameterType="com.qnbc.venueReservation.domain.WxPayInfo">
+        insert into wx_pay_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="appId != null">appid,</if>
+            <if test="timeStamp != null">time_stamp,</if>
+            <if test="nonceStr != null">nonce_str,</if>
+            <if test="packageVal != null">package_val,</if>
+            <if test="signType != null">sign_type,</if>
+            <if test="paySign != null">pay_sign,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="appId != null">#{appId},</if>
+            <if test="timeStamp != null">#{timeStamp},</if>
+            <if test="nonceStr != null">#{nonceStr},</if>
+            <if test="packageVal != null">#{packageVal},</if>
+            <if test="signType != null">#{signType},</if>
+            <if test="paySign != null">#{paySign},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWxPayInfo" parameterType="com.qnbc.venueReservation.domain.WxPayInfo">
+        update wx_pay_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appId != null">appid = #{appId},</if>
+            <if test="timeStamp != null">time_stamp = #{timeStamp},</if>
+            <if test="nonceStr != null">nonce_str = #{nonceStr},</if>
+            <if test="packageVal != null">package_val = #{packageVal},</if>
+            <if test="signType != null">sign_type = #{signType},</if>
+            <if test="paySign != null">pay_sign = #{paySign},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWxPayInfoById" parameterType="Long">
+        delete
+        from wx_pay_info
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteWxPayInfoByIds" parameterType="String">
+        delete from wx_pay_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

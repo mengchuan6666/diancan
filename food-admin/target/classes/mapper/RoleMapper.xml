@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.RoleMapper">
+
+    <select id="selectByRoleKey" resultType="com.qnbc.venueReservation.entity.Role">
+        select * from sys_role where flag in
+        <foreach item="index" index="index" collection="siteRole.split(',')" open="(" close=")" separator=",">
+            '${index}'
+        </foreach>
+
+    </select>
+</mapper>

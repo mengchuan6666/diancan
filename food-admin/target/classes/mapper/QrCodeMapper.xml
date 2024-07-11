@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.QrCodeMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.QrCode" id="QrCodeResult">
+        <result property="id"    column="id"    />
+        <result property="canteenId"    column="canteen_id"    />
+        <result property="tableNum"    column="table_num"    />
+        <result property="codeUrl"    column="code_url"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectQrCodeVo">
+        select id, canteen_id, table_num, code_url, created_by, created_time, updated_by, updated_time from QR_code
+    </sql>
+
+    <select id="selectQrCodeList" parameterType="com.qnbc.venueReservation.domain.QrCode" resultMap="QrCodeResult">
+        <include refid="selectQrCodeVo"/>
+        <where>
+            <if test="canteenId != null  and canteenId != ''"> and canteen_id = #{canteenId}</if>
+            <if test="tableNum != null  and tableNum != ''"> and table_num = #{tableNum}</if>
+            <if test="codeUrl != null  and codeUrl != ''"> and code_url = #{codeUrl}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+
+    <select id="selectQrCodeById" parameterType="Long" resultMap="QrCodeResult">
+        <include refid="selectQrCodeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQrCode" parameterType="com.qnbc.venueReservation.domain.QrCode">
+        insert into QR_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="canteenId != null and canteenId != ''">canteen_id,</if>
+            <if test="tableNum != null and tableNum != ''">table_num,</if>
+            <if test="codeUrl != null and codeUrl != ''">code_url,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="canteenId != null and canteenId != ''">#{canteenId},</if>
+            <if test="tableNum != null and tableNum != ''">#{tableNum},</if>
+            <if test="codeUrl != null and codeUrl != ''">#{codeUrl},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQrCode" parameterType="com.qnbc.venueReservation.domain.QrCode">
+        update QR_code
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="canteenId != null and canteenId != ''">canteen_id = #{canteenId},</if>
+            <if test="tableNum != null and tableNum != ''">table_num = #{tableNum},</if>
+            <if test="codeUrl != null and codeUrl != ''">code_url = #{codeUrl},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQrCodeById" parameterType="Long">
+        delete from QR_code where id = #{id}
+    </delete>
+
+    <delete id="deleteQrCodeByIds" parameterType="String">
+        delete from QR_code where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

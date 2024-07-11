@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.BaseInfoMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.BaseInfo" id="BaseInfoResult">
+        <result property="id"    column="id"    />
+        <result property="nameKey"    column="name_key"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+    </resultMap>
+
+    <sql id="selectBaseInfoVo">
+        select id, name_key, start_time, end_time from base_info
+    </sql>
+
+    <select id="selectBaseInfoList" parameterType="com.qnbc.venueReservation.domain.BaseInfo" resultMap="BaseInfoResult">
+        <include refid="selectBaseInfoVo"/>
+        <where>
+            <if test="nameKey != null  and nameKey != ''"> and name_key = #{nameKey}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="selectBaseInfoById" parameterType="Long" resultMap="BaseInfoResult">
+        <include refid="selectBaseInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBaseInfo" parameterType="com.qnbc.venueReservation.domain.BaseInfo">
+        insert into base_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="nameKey != null">name_key,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="nameKey != null">#{nameKey},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseInfo" parameterType="com.qnbc.venueReservation.domain.BaseInfo">
+        update base_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nameKey != null">name_key = #{nameKey},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBaseInfoById" parameterType="Long">
+        delete from base_info where id = #{id}
+    </delete>
+
+    <delete id="deleteBaseInfoByIds" parameterType="String">
+        delete from base_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

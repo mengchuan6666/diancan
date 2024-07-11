@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.MemberVipMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.MemberVip" id="MemberVipResult">
+        <result property="id"    column="id"    />
+    </resultMap>
+
+    <sql id="selectMemberVipVo">
+        select id from member_vip
+    </sql>
+
+    <select id="selectMemberVipList" parameterType="com.qnbc.venueReservation.domain.MemberVip" resultMap="MemberVipResult">
+        <include refid="selectMemberVipVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectMemberVipById" parameterType="Long" resultMap="MemberVipResult">
+        <include refid="selectMemberVipVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMemberVip" parameterType="com.qnbc.venueReservation.domain.MemberVip">
+        insert into member_vip
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMemberVip" parameterType="com.qnbc.venueReservation.domain.MemberVip">
+        update member_vip
+        <trim prefix="SET" suffixOverrides=",">
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberVipById" parameterType="Long">
+        delete from member_vip where id = #{id}
+    </delete>
+
+    <delete id="deleteMemberVipByIds" parameterType="String">
+        delete from member_vip where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

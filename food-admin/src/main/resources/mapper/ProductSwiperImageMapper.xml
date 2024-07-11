@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.ProductSwiperImageMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.ProductSwiperImage" id="ProductSwiperImageResult">
+        <result property="id"    column="id"    />
+        <result property="image"    column="image"    />
+        <result property="sort"    column="sort"    />
+        <result property="productid"    column="productId"    />
+    </resultMap>
+
+    <sql id="selectProductSwiperImageVo">
+        select id, image, sort, productId from product_swiper_image
+    </sql>
+
+    <select id="selectProductSwiperImageList" parameterType="com.qnbc.venueReservation.domain.ProductSwiperImage" resultMap="ProductSwiperImageResult">
+        <include refid="selectProductSwiperImageVo"/>
+        <where>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="productid != null "> and productId = #{productid}</if>
+        </where>
+    </select>
+
+    <select id="selectProductSwiperImageById" parameterType="Long" resultMap="ProductSwiperImageResult">
+        <include refid="selectProductSwiperImageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertProductSwiperImage" parameterType="com.qnbc.venueReservation.domain.ProductSwiperImage" useGeneratedKeys="true" keyProperty="id">
+        insert into product_swiper_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="image != null">image,</if>
+            <if test="sort != null">sort,</if>
+            <if test="productid != null">productId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="image != null">#{image},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="productid != null">#{productid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductSwiperImage" parameterType="com.qnbc.venueReservation.domain.ProductSwiperImage">
+        update product_swiper_image
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="image != null">image = #{image},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="productid != null">productId = #{productid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductSwiperImageById" parameterType="Long">
+        delete from product_swiper_image where id = #{id}
+    </delete>
+
+    <delete id="deleteProductSwiperImageByIds" parameterType="String">
+        delete from product_swiper_image where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

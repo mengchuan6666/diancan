@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.FoodOrderMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.FoodOrder" id="OrderResult">
+        <result property="id" column="id"/>
+        <result property="orderno" column="orderNo"/>
+        <result property="userid" column="userId"/>
+        <result property="totalprice" column="totalPrice"/>
+        <result property="address" column="address"/>
+        <result property="consignee" column="consignee"/>
+        <result property="telnumber" column="telNumber"/>
+        <result property="createdate" column="createDate"/>
+        <result property="paydate" column="payDate"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="selectOrderVo">
+        select id,
+               orderNo,
+               userId,
+               totalPrice,
+               address,
+               consignee,
+               telNumber,
+               createDate,
+               payDate,
+               status,
+               table_num,
+               eat_num,
+               message
+        from food_order
+    </sql>
+
+    <select id="selectOrderList" parameterType="com.qnbc.venueReservation.domain.FoodOrder" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>
+            <if test="orderno != null  and orderno != ''">and orderNo = #{orderno}</if>
+            <if test="userid != null  and userid != ''">and userId = #{userid}</if>
+            <if test="totalprice != null ">and totalPrice = #{totalprice}</if>
+            <if test="address != null  and address != ''">and address = #{address}</if>
+            <if test="consignee != null  and consignee != ''">and consignee = #{consignee}</if>
+            <if test="telnumber != null  and telnumber != ''">and telNumber = #{telnumber}</if>
+            <if test="createdate != null ">and createDate = #{createdate}</if>
+            <if test="paydate != null ">and payDate = #{paydate}</if>
+            <if test="status != null  and status != 0 ">and status = #{status}</if>
+        </where>
+        order by id  desc
+    </select>
+
+    <select id="selectOrderById" parameterType="Long" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOrder" parameterType="com.qnbc.venueReservation.domain.FoodOrder" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into food_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderno != null">orderNo,</if>
+            <if test="userid != null">userId,</if>
+            <if test="totalprice != null">totalPrice,</if>
+            <if test="address != null">address,</if>
+            <if test="consignee != null">consignee,</if>
+            <if test="telnumber != null">telNumber,</if>
+            <if test="createdate != null">createDate,</if>
+            <if test="paydate != null">payDate,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderno != null">#{orderno},</if>
+            <if test="userid != null">#{userid},</if>
+            <if test="totalprice != null">#{totalprice},</if>
+            <if test="address != null">#{address},</if>
+            <if test="consignee != null">#{consignee},</if>
+            <if test="telnumber != null">#{telnumber},</if>
+            <if test="createdate != null">#{createdate},</if>
+            <if test="paydate != null">#{paydate},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOrder" parameterType="com.qnbc.venueReservation.domain.FoodOrder">
+        update food_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderno != null">orderNo = #{orderno},</if>
+            <if test="userid != '' and userid != null">userId = #{userid},</if>
+            <if test="totalprice != '' and totalprice != null">totalPrice = #{totalprice},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="consignee != null">consignee = #{consignee},</if>
+            <if test="telnumber != null">telNumber = #{telnumber},</if>
+            <if test=" createdate != null">createDate = #{createdate},</if>
+            <if test="paydate != null">payDate = #{paydate},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="Long">
+        delete
+        from food_order
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderByIds" parameterType="String">
+        delete from food_order where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

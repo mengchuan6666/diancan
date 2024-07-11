@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.SmalltypeMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.Smalltype" id="SmalltypeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="remark"    column="remark"    />
+        <result property="bigtypeid"    column="bigTypeId"    />
+    </resultMap>
+
+    <sql id="selectSmalltypeVo">
+        select id, name, remark, bigTypeId from smalltype
+    </sql>
+
+    <select id="selectSmalltypeList" parameterType="com.qnbc.venueReservation.domain.Smalltype" resultMap="SmalltypeResult">
+        <include refid="selectSmalltypeVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="bigtypeid != null "> and bigTypeId = #{bigtypeid}</if>
+        </where>
+    </select>
+
+    <select id="selectSmalltypeById" parameterType="Long" resultMap="SmalltypeResult">
+        <include refid="selectSmalltypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSmalltype" parameterType="com.qnbc.venueReservation.domain.Smalltype" useGeneratedKeys="true" keyProperty="id">
+        insert into smalltype
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="bigtypeid != null">bigTypeId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="bigtypeid != null">#{bigtypeid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSmalltype" parameterType="com.qnbc.venueReservation.domain.Smalltype">
+        update smalltype
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="bigtypeid != null">bigTypeId = #{bigtypeid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSmalltypeById" parameterType="Long">
+        delete from smalltype where id = #{id}
+    </delete>
+
+    <delete id="deleteSmalltypeByIds" parameterType="String">
+        delete from smalltype where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

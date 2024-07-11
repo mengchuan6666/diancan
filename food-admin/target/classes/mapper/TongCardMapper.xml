@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qnbc.venueReservation.mapper.TongCardMapper">
+
+    <resultMap type="com.qnbc.venueReservation.domain.TongCard" id="TongCardResult">
+        <result property="id" column="id"/>
+        <result property="cardName" column="card_name"/>
+        <result property="cardThem" column="card_them"/>
+        <result property="serviceScope" column="service_scope"/>
+        <result property="cardMoney" column="card_money"/>
+        <result property="deadline" column="deadline"/>
+        <result property="cardDescription" column="card_description"/>
+        <result property="cardRemark" column="card_remark"/>
+        <result property="deleted" column="deleted"/>
+        <result property="revision" column="revision"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="activityName" column="activity_name"/>
+    </resultMap>
+
+    <sql id="selectTongCardVo">
+        select id,
+               card_name,
+               card_them,
+               service_scope,
+               card_money,
+               deadline,
+               card_description,
+               card_remark,
+               deleted,
+               revision,
+               created_by,
+               created_time,
+               updated_by,
+               updated_time,
+               activity_id,
+               activity_name
+        from tong_card
+    </sql>
+
+    <select id="selectTongCardList" parameterType="com.qnbc.venueReservation.domain.TongCard"
+            resultMap="TongCardResult">
+        <include refid="selectTongCardVo"/>
+        <where>
+            <if test="cardName != null  and cardName != ''">and card_name like concat('%', #{cardName}, '%')</if>
+            <if test="cardThem != null  and cardThem != ''">and card_them = #{cardThem}</if>
+            <if test="serviceScope != null  and serviceScope != ''">and service_scope = #{serviceScope}</if>
+            <if test="cardMoney != null  and cardMoney != ''">and card_money = #{cardMoney}</if>
+            <if test="deadline != null  and deadline != ''">and deadline = #{deadline}</if>
+            <if test="cardDescription != null  and cardDescription != ''">and card_description = #{cardDescription}</if>
+            <if test="cardRemark != null  and cardRemark != ''">and card_remark = #{cardRemark}</if>
+            <if test="deleted != null ">and deleted = #{deleted}</if>
+            <if test="revision != null ">and revision = #{revision}</if>
+            <if test="createdBy != null  and createdBy != ''">and created_by = #{createdBy}</if>
+            <if test="createdTime != null ">and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''">and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null ">and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+
+    <select id="selectTongCardById" parameterType="Long" resultMap="TongCardResult">
+        <include refid="selectTongCardVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTongCard" parameterType="com.qnbc.venueReservation.domain.TongCard">
+        insert into tong_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="cardName != null">card_name,</if>
+            <if test="cardThem != null">card_them,</if>
+            <if test="serviceScope != null">service_scope,</if>
+            <if test="cardMoney != null">card_money,</if>
+            <if test="deadline != null">deadline,</if>
+            <if test="cardDescription != null">card_description,</if>
+            <if test="cardRemark != null">card_remark,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="revision != null">revision,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="activityId != null">activity_id,</if>
+            <if test="activityName != null">activity_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="cardName != null">#{cardName},</if>
+            <if test="cardThem != null">#{cardThem},</if>
+            <if test="serviceScope != null">#{serviceScope},</if>
+            <if test="cardMoney != null">#{cardMoney},</if>
+            <if test="deadline != null">#{deadline},</if>
+            <if test="cardDescription != null">#{cardDescription},</if>
+            <if test="cardRemark != null">#{cardRemark},</if>
+            <if test="deleted != null">#{deleted},</if>
+            <if test="revision != null">#{revision},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="activityId != null">#{activityId},</if>
+            <if test="activityName != null">#{activityName},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTongCard" parameterType="com.qnbc.venueReservation.domain.TongCard">
+        update tong_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cardName != null">card_name = #{cardName},</if>
+            <if test="cardThem != null">card_them = #{cardThem},</if>
+            <if test="serviceScope != null">service_scope = #{serviceScope},</if>
+            <if test="cardMoney != null">card_money = #{cardMoney},</if>
+            <if test="deadline != null">deadline = #{deadline},</if>
+            <if test="cardDescription != null">card_description = #{cardDescription},</if>
+            <if test="cardRemark != null">card_remark = #{cardRemark},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="revision != null">revision = #{revision},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="activityId != null">activity_id = #{activityId},</if>
+            <if test="activityName != null">activity_name = #{activityName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTongCardById" parameterType="Long">
+        delete
+        from tong_card
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTongCardByIds" parameterType="String">
+        delete from tong_card where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteByActivityId" parameterType="java.lang.Long">
+        delete from tong_card where activity_id = #{activityId}
+    </delete>
+</mapper>
